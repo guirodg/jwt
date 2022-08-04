@@ -10,4 +10,6 @@ import lombok.Setter;
 public class Usuario {
   private String nome;
   private String senha;
+  private boolean naoExpirada;
+  private boolean naoBloqueada;
 }

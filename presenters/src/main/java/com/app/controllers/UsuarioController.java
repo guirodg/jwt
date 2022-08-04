@@ -19,7 +19,8 @@ public class UsuarioController {
 
   @PostMapping
   public ResponseEntity<Usuario> saveClient(@RequestBody UsuarioRequest usuarioRequest) {
-    final var usuario = new Usuario(usuarioRequest.getNome(), usuarioRequest.getSenha());
+    final var usuario = new Usuario(usuarioRequest.getNome(),
+        usuarioRequest.getSenha(), usuarioRequest.isNaoExpirada(), usuarioRequest.isNaoBloqueada());
     persistenciaUsuario.save(usuario);
     return new ResponseEntity<>(usuario, HttpStatus.OK);
   }

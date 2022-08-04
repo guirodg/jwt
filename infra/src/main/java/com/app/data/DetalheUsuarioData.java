@@ -32,12 +32,12 @@ public class DetalheUsuarioData implements UserDetails {
 
   @Override
   public boolean isAccountNonExpired() {
-    return true;
+    return usuarioEntity.isNaoExpirada();
   }
 
   @Override
   public boolean isAccountNonLocked() {
-    return true;
+    return usuarioEntity.isNaoBloqueada();
   }
 
   @Override

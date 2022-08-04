@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@Table(name = "Usuario")
+@Table(name = "usuario")
 public class UsuarioEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,4 +16,8 @@ public class UsuarioEntity {
   @Column(unique = true)
   private String nome;
   private String senha;
+  @Column(name = "nao_expirada")
+  private boolean naoExpirada;
+  @Column(name = "nao_bloqueada")
+  private boolean naoBloqueada;
 }

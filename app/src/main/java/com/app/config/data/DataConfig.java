@@ -1,6 +1,5 @@
 package com.app.config.data;
 
-import com.app.port.CriptarSenhaUsuario;
 import com.app.jpa.UsuarioJPA;
 import com.app.repositoryimpl.UsuarioRepositoryImpl;
 import com.app.service.CriptarSenhaUsuarioImpl;
@@ -17,8 +16,7 @@ public class DataConfig {
   }
 
   @Bean
-  public UsuarioRepositoryImpl usuarioRepository(UsuarioJPA usuarioJPA,
-                                                 CriptarSenhaUsuario criptarSenhaUsuario) {
-    return new UsuarioRepositoryImpl(usuarioJPA, criptarSenhaUsuario);
+  public UsuarioRepositoryImpl usuarioRepository(UsuarioJPA usuarioJPA) {
+    return new UsuarioRepositoryImpl(usuarioJPA);
   }
 }
