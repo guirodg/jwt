@@ -1,7 +1,6 @@
 package com.app.controllers;
 
 import com.app.entites.Usuario;
-import com.app.mappers.ConverteUsuarioRequestParaUsuarioDomain;
 import com.app.request.UsuarioRequest;
 import com.app.usecase.PersistenciaUsuario;
 import lombok.RequiredArgsConstructor;
@@ -18,11 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class UsuarioController {
   private final PersistenciaUsuario persistenciaUsuario;
 
-  private final ConverteUsuarioRequestParaUsuarioDomain converteUsuarioRequestParaUsuarioDomain;
-
   @PostMapping
   public ResponseEntity<Usuario> saveClient(@RequestBody UsuarioRequest usuarioRequest) {
-    final var usuario = converteUsuarioRequestParaUsuarioDomain.executar(usuarioRequest);
+    final var usuario = new Usuario(usuarioRequest.getNome(), usuarioRequest.getSenha());
     persistenciaUsuario.save(usuario);
     return new ResponseEntity<>(usuario, HttpStatus.OK);
   }

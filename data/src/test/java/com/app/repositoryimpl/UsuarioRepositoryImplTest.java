@@ -1,7 +1,7 @@
 package com.app.repositoryimpl;
 
 
-import com.app.CriptarSenhaUsuario;
+import com.app.port.CriptarSenhaUsuario;
 import com.app.entites.Usuario;
 import com.app.jpa.UsuarioJPA;
 import org.junit.jupiter.api.DisplayName;

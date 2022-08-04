@@ -4,11 +4,9 @@ import com.app.entites.Usuario;
 import com.app.exception.DomainException;
 import com.app.port.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
-@Service
 @RequiredArgsConstructor
 public class PersistenciaUsuario {
   private final UsuarioRepository usuarioRepository;
