@@ -9,16 +9,28 @@ import lombok.RequiredArgsConstructor;
 import java.util.Objects;
 
 @RequiredArgsConstructor
-public class PersistenciaUsuario {
+public class RepositoryUsuario {
   private final UsuarioRepository usuarioRepository;
   private final CriptarSenhaUsuario criptarSenhaUsuario;
 
   public void save(Usuario usuario) {
-    if (Objects.isNull(usuario.getNome()) || Objects.isNull(usuario.getSenha()))
+    if (Objects.isNull(usuario.getNome()) || Objects.isNull(usuario.getSenha())) {
       throw new DomainException("Usuario não pode ser nulo");
+    }
 
     final var novaSenha = criptarSenhaUsuario.executar(usuario.getSenha());
     usuario.setSenha(novaSenha);
     usuarioRepository.save(usuario);
+  }
+
+  public void atualizarPermissoes(String nomeUsuario, Usuario usuarioAtualizado) {
+    final var usuario = usuarioRepository.atualizaPermissoes(
+        nomeUsuario,
+        usuarioAtualizado
+    );
+
+    if (usuario.isEmpty()) {
+      throw new DomainException("Usuario não encontrado na base de dados");
+    }
   }
 }

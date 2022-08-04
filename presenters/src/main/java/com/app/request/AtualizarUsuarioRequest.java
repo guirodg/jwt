@@ -6,9 +6,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UsuarioRequest {
+public class AtualizarUsuarioRequest {
   private String nome;
-  private String senha;
   @JsonProperty("nao_expirada")
   private boolean naoExpirada;
   @JsonProperty("nao_bloqueada")

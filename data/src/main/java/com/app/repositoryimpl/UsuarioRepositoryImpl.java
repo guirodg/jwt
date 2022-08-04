@@ -6,6 +6,8 @@ import com.app.model.UsuarioEntity;
 import com.app.port.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 public class UsuarioRepositoryImpl implements UsuarioRepository {
 
@@ -15,6 +17,25 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
   public void save(Usuario usuario) {
     final var usuarioEntity = converteUsuarioParaEntityDB(usuario);
     usuarioJPA.save(usuarioEntity);
+  }
+
+  @Override
+  public Optional<Usuario> atualizaPermissoes(String nomeUsuario, Usuario usuarioAtualizado) {
+    final var optUsuarioEntity = usuarioJPA.findByNome(nomeUsuario);
+    if (optUsuarioEntity.isPresent()) {
+      final var usuarioEntity = optUsuarioEntity.get();
+      usuarioEntity.setNaoBloqueada(usuarioAtualizado.isNaoBloqueada());
+      usuarioEntity.setNaoExpirada(usuarioAtualizado.isNaoExpirada());
+
+      usuarioJPA.save(usuarioEntity);
+
+      return optUsuarioEntity.map(usuarioEntity1 -> new Usuario(
+          usuarioEntity1.getNome(),
+          usuarioEntity1.getSenha(),
+          usuarioEntity1.isNaoExpirada(),
+          usuarioEntity1.isNaoBloqueada()));
+    }
+    return Optional.empty();
   }
 
   private UsuarioEntity converteUsuarioParaEntityDB(Usuario usuario) {
