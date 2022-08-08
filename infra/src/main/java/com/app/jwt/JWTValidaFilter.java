@@ -1,5 +1,6 @@
 package com.app.jwt;
 
+import com.app.strategy.CriaTokenVerificandoSeAdmStrategy;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,15 +13,18 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class JWTValidaFilter extends BasicAuthenticationFilter {
   public static final String HEADER_ATRIBUTO = "Authorization";
   public static final String ATRIBUTO_PREFIX = "Bearer ";
 
-  public JWTValidaFilter(AuthenticationManager authenticationManager) {
+  private final CriaTokenVerificandoSeAdmStrategy criaTokenVerificandoSeAdmStrategy;
+
+  public JWTValidaFilter(AuthenticationManager authenticationManager,
+                         CriaTokenVerificandoSeAdmStrategy criaTokenVerificandoSeAdmStrategy) {
     super(authenticationManager);
+    this.criaTokenVerificandoSeAdmStrategy = criaTokenVerificandoSeAdmStrategy;
   }
 
   @Override
@@ -51,7 +55,9 @@ public class JWTValidaFilter extends BasicAuthenticationFilter {
         .build().verify(token).getSubject();
 
     if (Objects.isNull(usuario)) return null;
+    final var nomeUsuario = criaTokenVerificandoSeAdmStrategy.getNomeUsuario();
+    final var grantedAuthorities = criaTokenVerificandoSeAdmStrategy.executar(nomeUsuario);
 
-    return new UsernamePasswordAuthenticationToken(usuario, null, new ArrayList<>());
+    return new UsernamePasswordAuthenticationToken(usuario, null, grantedAuthorities);
   }
 }

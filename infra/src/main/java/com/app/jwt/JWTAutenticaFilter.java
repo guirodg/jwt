@@ -2,9 +2,11 @@ package com.app.jwt;
 
 import com.app.data.DetalheUsuarioData;
 import com.app.model.UsuarioEntity;
+import com.app.strategy.CriaTokenVerificandoSeAdmStrategy;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,18 +18,16 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 
+@RequiredArgsConstructor
 public class JWTAutenticaFilter extends UsernamePasswordAuthenticationFilter {
   public static final int TOKEN_EXPIRACAO = 600_000;
   public static final String TOKEN_SENHA = "senha_secreta";
 
   private final AuthenticationManager authenticationManager;
 
-  public JWTAutenticaFilter(AuthenticationManager authenticationManager) {
-    this.authenticationManager = authenticationManager;
-  }
+  private final CriaTokenVerificandoSeAdmStrategy criaTokenVerificandoSeAdmStrategy;
 
   @Override
   public Authentication attemptAuthentication(HttpServletRequest request,
@@ -35,10 +35,11 @@ public class JWTAutenticaFilter extends UsernamePasswordAuthenticationFilter {
 
     try {
       final var usuario = new ObjectMapper().readValue(request.getInputStream(), UsuarioEntity.class);
+      final var grantedAuthorities = criaTokenVerificandoSeAdmStrategy.executar(usuario.getNome());
       return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
           usuario.getNome(),
           usuario.getSenha(),
-          new ArrayList<>()
+          grantedAuthorities
       ));
     } catch (IOException e) {
       throw new RuntimeException("Falha ao autenticar " + e);

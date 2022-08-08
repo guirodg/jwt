@@ -24,13 +24,7 @@ public class RepositoryUsuario {
   }
 
   public void atualizarPermissoes(String nomeUsuario, Usuario usuarioAtualizado) {
-    final var usuario = usuarioRepository.atualizaPermissoes(
-        nomeUsuario,
-        usuarioAtualizado
-    );
-
-    if (usuario.isEmpty()) {
-      throw new DomainException("Usuario não encontrado na base de dados");
-    }
+    usuarioRepository.atualizaPermissoes(nomeUsuario, usuarioAtualizado).orElseThrow(() ->
+        new DomainException("Usuario não encontrado na base de dados"));
   }
 }

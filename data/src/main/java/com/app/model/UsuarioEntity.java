@@ -20,4 +20,5 @@ public class UsuarioEntity {
   private boolean naoExpirada;
   @Column(name = "nao_bloqueada")
   private boolean naoBloqueada;
+  private boolean administrator;
 }

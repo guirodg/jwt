@@ -29,11 +29,11 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
 
       usuarioJPA.save(usuarioEntity);
 
-      return optUsuarioEntity.map(usuarioEntity1 -> new Usuario(
-          usuarioEntity1.getNome(),
-          usuarioEntity1.getSenha(),
-          usuarioEntity1.isNaoExpirada(),
-          usuarioEntity1.isNaoBloqueada()));
+      return optUsuarioEntity.map(optUsuario -> new Usuario(
+          optUsuario.getNome(),
+          optUsuario.getSenha(),
+          optUsuario.isNaoExpirada(),
+          optUsuario.isNaoBloqueada()));
     }
     return Optional.empty();
   }

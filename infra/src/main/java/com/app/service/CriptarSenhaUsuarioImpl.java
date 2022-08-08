@@ -2,9 +2,7 @@ package com.app.service;
 
 import com.app.port.CriptarSenhaUsuario;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 
-@Component
 public class CriptarSenhaUsuarioImpl implements CriptarSenhaUsuario {
 
   private final PasswordEncoder passwordEncoder;
