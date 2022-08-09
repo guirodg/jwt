@@ -38,6 +38,8 @@
             <artifactId>presenters</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+
+        <!--INFRA-->
         <dependency>
             <groupId>jwt</groupId>
             <artifactId>infra</artifactId>
@@ -46,4 +48,12 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>
