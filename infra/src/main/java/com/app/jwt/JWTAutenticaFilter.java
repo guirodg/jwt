@@ -1,5 +1,6 @@
 package com.app.jwt;
 
+import com.app.config.PropertiesConfig;
 import com.app.data.DetalheUsuarioData;
 import com.app.model.UsuarioEntity;
 import com.app.strategy.CriaTokenVerificandoSeAdmStrategy;
@@ -23,11 +24,9 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JWTAutenticaFilter extends UsernamePasswordAuthenticationFilter {
   public static final int TOKEN_EXPIRACAO = 600_000;
-  public static final String TOKEN_SENHA = "senha_secreta";
-
   private final AuthenticationManager authenticationManager;
-
   private final CriaTokenVerificandoSeAdmStrategy criaTokenVerificandoSeAdmStrategy;
+  private final PropertiesConfig propertiesConfig;
 
   @Override
   public Authentication attemptAuthentication(HttpServletRequest request,
@@ -57,7 +56,7 @@ public class JWTAutenticaFilter extends UsernamePasswordAuthenticationFilter {
     final var token = JWT.create()
         .withSubject(detalheUsuarioData.getUsername())
         .withExpiresAt(new Date(System.currentTimeMillis() + TOKEN_EXPIRACAO))
-        .sign(Algorithm.HMAC512(TOKEN_SENHA));
+        .sign(Algorithm.HMAC512(propertiesConfig.getToken()));
 
     response.getWriter().write(token);
     response.getWriter().flush();

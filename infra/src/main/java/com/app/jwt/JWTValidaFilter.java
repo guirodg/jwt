@@ -1,8 +1,10 @@
 package com.app.jwt;
 
+import com.app.config.PropertiesConfig;
 import com.app.strategy.CriaTokenVerificandoSeAdmStrategy;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,13 +20,15 @@ import java.util.Objects;
 public class JWTValidaFilter extends BasicAuthenticationFilter {
   public static final String HEADER_ATRIBUTO = "Authorization";
   public static final String ATRIBUTO_PREFIX = "Bearer ";
-
   private final CriaTokenVerificandoSeAdmStrategy criaTokenVerificandoSeAdmStrategy;
+  private final PropertiesConfig propertiesConfig;
 
   public JWTValidaFilter(AuthenticationManager authenticationManager,
-                         CriaTokenVerificandoSeAdmStrategy criaTokenVerificandoSeAdmStrategy) {
+                         CriaTokenVerificandoSeAdmStrategy criaTokenVerificandoSeAdmStrategy,
+                         PropertiesConfig propertiesConfig) {
     super(authenticationManager);
     this.criaTokenVerificandoSeAdmStrategy = criaTokenVerificandoSeAdmStrategy;
+    this.propertiesConfig = propertiesConfig;
   }
 
   @Override
@@ -51,7 +55,7 @@ public class JWTValidaFilter extends BasicAuthenticationFilter {
   }
 
   private UsernamePasswordAuthenticationToken getAuthenticationToken(String token) {
-    final var usuario = JWT.require(Algorithm.HMAC512(JWTAutenticaFilter.TOKEN_SENHA))
+    final var usuario = JWT.require(Algorithm.HMAC512(propertiesConfig.getToken()))
         .build().verify(token).getSubject();
 
     if (Objects.isNull(usuario)) return null;

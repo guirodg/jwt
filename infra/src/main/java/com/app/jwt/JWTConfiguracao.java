@@ -1,5 +1,6 @@
 package com.app.jwt;
 
+import com.app.config.PropertiesConfig;
 import com.app.service.DetalheUsuarioServiceImpl;
 import com.app.strategy.CriaTokenVerificandoSeAdmStrategy;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class JWTConfiguracao extends WebSecurityConfigurerAdapter {
   private final PasswordEncoder passwordEncoder;
 
   private final CriaTokenVerificandoSeAdmStrategy criaTokenVerificandoSeAdmStrategy;
+  private final PropertiesConfig propertiesConfig;
 
 
   @Override
@@ -38,8 +40,8 @@ public class JWTConfiguracao extends WebSecurityConfigurerAdapter {
         .antMatchers(HttpMethod.PUT, "/api/atualiza-permissoes").hasRole("ADMIN")
         .anyRequest().authenticated()
         .and()
-        .addFilter(new JWTAutenticaFilter(authenticationManager(), criaTokenVerificandoSeAdmStrategy))
-        .addFilter(new JWTValidaFilter(authenticationManager(), criaTokenVerificandoSeAdmStrategy))
+        .addFilter(new JWTAutenticaFilter(authenticationManager(), criaTokenVerificandoSeAdmStrategy, propertiesConfig))
+        .addFilter(new JWTValidaFilter(authenticationManager(), criaTokenVerificandoSeAdmStrategy, propertiesConfig))
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
   }
 
