@@ -1,0 +1,14 @@
+server:
+  error:
+    include-stacktrace: on_param
+
+spring:
+  datasource:
+    url: jdbc:mysql://db:3306/db?createDatabaseIfNotExist=true
+    username: root
+    password: ${PASSWORD_DB}
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+    open-in-view: false

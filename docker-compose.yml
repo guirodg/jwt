@@ -2,6 +2,9 @@ version: '3'
 services:
   app:
     image: jwt:1.0
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_PASSWORD=${SENHA_DB}
     ports:
       - "8080:8080"
     depends_on:
@@ -9,6 +12,6 @@ services:
   db:
     image: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: ${SENHA_DB}
     ports:
       - "3306:3306"
