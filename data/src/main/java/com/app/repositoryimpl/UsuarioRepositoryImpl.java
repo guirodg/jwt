@@ -14,7 +14,12 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
 
   @Override
   public void save(Usuario usuario) {
-    final var usuarioEntity = converteUsuarioParaEntityDB(usuario);
+    final var usuarioEntity = UsuarioEntity.builder()
+        .nome(usuario.getNome())
+        .senha(usuario.getSenha())
+        .naoBloqueada(usuario.isNaoBloqueada())
+        .naoExpirada(usuario.isNaoExpirada())
+        .build();
     usuarioJPA.save(usuarioEntity);
   }
 
@@ -26,14 +31,5 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
     usuarioEntity.setNaoBloqueada(usuario.isNaoBloqueada());
     usuarioEntity.setNaoExpirada(usuario.isNaoExpirada());
     usuarioJPA.save(usuarioEntity);
-  }
-
-  private UsuarioEntity converteUsuarioParaEntityDB(Usuario usuario) {
-    final var usuarioEntity = new UsuarioEntity();
-    usuarioEntity.setNome(usuario.getNome());
-    usuarioEntity.setSenha(usuario.getSenha());
-    usuarioEntity.setNaoBloqueada(usuario.isNaoBloqueada());
-    usuarioEntity.setNaoExpirada(usuario.isNaoExpirada());
-    return usuarioEntity;
   }
 }
