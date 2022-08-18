@@ -1,8 +1,9 @@
 package com.app.controllers;
 
 import com.app.entites.Usuario;
+import com.app.exception.DomainException;
 import com.app.request.AtualizarUsuarioRequest;
-import com.app.usecase.RepositoryUsuario;
+import com.app.usecase.UsuarioUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AtualizarPermissoesController {
 
-  private final RepositoryUsuario repositoryUsuario;
+  private final UsuarioUseCase usuarioUseCase;
 
   @PutMapping("/atualiza-permissoes")
   @PreAuthorize("hasRole('ADMIN')")
@@ -25,9 +26,9 @@ public class AtualizarPermissoesController {
       usuario.setNome(nome);
       usuario.setNaoBloqueada(request.isNaoBloqueada());
       usuario.setNaoExpirada(request.isNaoExpirada());
-      repositoryUsuario.atualizarPermissoes(nome, usuario);
-    } catch (Exception e) {
-      return new ResponseEntity<>("Usuario não encontrado na base", HttpStatus.BAD_REQUEST);
+      usuarioUseCase.atualizarPermissoes(usuario);
+    } catch (DomainException erro) {
+      return new ResponseEntity<>(erro.getMessage(), HttpStatus.BAD_REQUEST);
     }
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }

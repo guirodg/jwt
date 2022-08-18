@@ -1,11 +1,10 @@
 package com.app.port;
 
 import com.app.entites.Usuario;
-
-import java.util.Optional;
+import com.app.exception.DomainException;
 
 public interface UsuarioRepository {
   void save(Usuario usuario);
 
-  Optional<Usuario> atualizaPermissoes(String nomeUsuario, Usuario usuarioAtualizado);
+  void atualizaPermissoes(Usuario usuario) throws DomainException;
 }

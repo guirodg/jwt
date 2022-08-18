@@ -2,7 +2,7 @@ package com.app.controllers;
 
 import com.app.entites.Usuario;
 import com.app.request.CadastroRequest;
-import com.app.usecase.RepositoryUsuario;
+import com.app.usecase.UsuarioUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class CadastroUsuarioController {
-  private final RepositoryUsuario repositoryUsuario;
+  private final UsuarioUseCase usuarioUseCase;
 
   @PostMapping("/cadastro")
   public ResponseEntity<Usuario> cadastroUsuario(@RequestBody CadastroRequest request) {
@@ -29,7 +29,7 @@ public class CadastroUsuarioController {
         NAO_ESTA_BLOQUEADO
     );
 
-    repositoryUsuario.save(usuario);
+    usuarioUseCase.save(usuario);
     return new ResponseEntity<>(usuario, HttpStatus.OK);
   }
 }
